@@ -39,7 +39,7 @@
 						<a href="#" data-toggle="dropdown" class="dropdown-toggle">Basis Data</a>
 						<ul class="dropdown-menu">
 							<li><a href="?url=admin/gejala">Gejala</a></li>
-							<li><a href="?url=admin/gangguan">Gangguan Penyakit</a></li>
+							<li><a href="?url=admin/gangguan">Penyakit</a></li>
 						</ul>
 					</li>
 					<li class="nav-item">
@@ -47,6 +47,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="?url=admin/diagnosa">Daftar Pertanyaan</a></li>
 							<li><a href="?url=admin/respon">Daftar Jawaban</a></li>
+							<li><a href="?url=admin/solusi">Daftar Solusi</a></li>
 <!-- 							<li><a href="#">Data Gangguan</a></li>
 							<li><a href="#">Daftar Gejala</a></li>
 							<li class="divider"></li>
@@ -57,7 +58,8 @@
 								</ul>
 							</li>
 							<li><a href="#">Daftar Kesimpulan</a></li>
- -->							<li class="divider"></li>
+ -->							
+ 							<li class="divider"></li>
 							<li><a href="?url=admin/pasien">Pasien</a></li>
 							<li><a href="#">Users</a></li>
 							<li><a href="#">Groups</a></li>
