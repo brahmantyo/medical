@@ -62,6 +62,7 @@ class Mysql extends Database
         $limit = "LIMIT 1";
         $page = '';
         $fields = [];
+        // $id = "'$id'";
         if(!is_null($options)){
             if(is_array($options)){
                 foreach ($options as $key => $value) {
@@ -76,6 +77,9 @@ class Mysql extends Database
                     }
                     if($key == 'limit'){
                         $limit = $value==0?'':"LIMIT $value";
+                    }
+                    if($key == 'pktype'){
+                        $id = $value == 'char'?"$id":$id;
                     }
                 }
             }
@@ -160,7 +164,7 @@ class Mysql extends Database
         return $this->Exec($sql);
     }
 
-    public function update($table,$inputs,$type=null){
+    public function update($id,$table,$inputs,$type=null){
         $fields = '';
         $data = '';
         $i = 0;
@@ -182,21 +186,21 @@ class Mysql extends Database
                 $fields .= '\'' . $value . '\'' . $comma;                
             }
 
-
-            $and = $i < count($inputs)?'AND':'';
-            if(isset($type[$key])&&($type[$key]=='char')){
-                $where .= ' '.$key.' = \'' . $value . '\' ' . $and;
-            } else if(isset($type[$key])&&($type[$key]=='int')) {
-                $where .= ' '.$key.' = ' . $value . ' ' . $and . ' ';
-            } else {
-                $where .= '\'' . $value . '\'' . $and;                
-            }
+            $where = $id['type']=='char'?"$id[name] = '$id[value]'":"$id[name] = $id[value]";
+            // $and = $i < count($inputs)?'AND':'';
+            // if(isset($type[$key])&&($type[$key]=='char')){
+            //     $where .= ' '.$key.' = \'' . $value . '\' ' . $and;
+            // } else if(isset($type[$key])&&($type[$key]=='int')) {
+            //     $where .= ' '.$key.' = ' . $value . ' ' . $and . ' ';
+            // } else {
+            //     $where .= '\'' . $value . '\'' . $and;                
+            // }
         }
         $sql = "UPDATE $table ";
         $sql .= "SET $fields ";
         $sql .= "WHERE $where";
         logs($sql);
-        // return $this->Exec($sql);
+        return $this->Exec($sql);
     }
 
     public function getAll($table,$length,$page=1,$altsql=null,$pk=null){
@@ -267,8 +271,47 @@ class Mysql extends Database
         return;
     }
 
+    public function getFirst($table,$fields=[],$byorder=null){
+        $arrfield='*';
+        if(!empty($fields)){
+            $arrfield = join(',',$fields);
+        }
+        if(!empty($byorder)){
+            $by = "ORDER BY ";
+            foreach ($byorder as $key => $order) {
+                $by .= " $key $order ";
+            }
+        } else {
+            $by = "ORDER BY created ASC";
+        }
+
+        $sql = "SELECT $arrfield,created FROM $table $by LIMIT 1";
+        logs($sql);
+        try{
+            if(!($result = mysqli_query($this->connection,$sql))){
+                throw new Exception("Error doing query : \"".$sql."\"");
+            }
+        }
+        catch(Exception $e){
+            logs($e->getMessage());
+            die();
+        }
+        try{
+            if($data = (Object) mysqli_fetch_assoc($result)){
+                mysqli_free_result($result);
+                return $data;                
+            } else {
+                throw new Exception("Data tidak ditemukan", 1);
+            }
+        } catch(Exception $e){
+            logs($e->getMessage());
+            die();
+        }
+        return;
+    }
+
     public function getLast($table,$fields=[],$byorder=null){
-        $arrfield;
+        $arrfield = "*";
         if(!empty($fields)){
             $arrfield = join(',',$fields);
         }
@@ -282,6 +325,71 @@ class Mysql extends Database
         }
 
         $sql = "SELECT $arrfield,created FROM $table $by LIMIT 1";
+        logs($sql);
+        try{
+            if(!($result = mysqli_query($this->connection,$sql))){
+                throw new Exception("Error doing query : \"".$sql."\"");
+            }
+        }
+        catch(Exception $e){
+            logs($e->getMessage());
+            die();
+        }
+        try{
+            if($data = (Object) mysqli_fetch_assoc($result)){
+                mysqli_free_result($result);
+                return $data;                
+            } else {
+                throw new Exception("Data tidak ditemukan", 1);
+            }
+        } catch(Exception $e){
+            logs($e->getMessage());
+            die();
+        }
+        return;
+    }
+
+    public function getNext($id,$table,$field,$typepk=null){
+        logs('getNext');
+        if(isset($typepk)){
+            if($typepk == 'char'){
+                $id = "'$id'";
+            }
+        }
+
+        $sql = "SELECT * FROM $table WHERE $field > $id LIMIT 1";
+        logs($sql);
+        try{
+            if(!($result = mysqli_query($this->connection,$sql))){
+                throw new Exception("Error doing query : \"".$sql."\"");
+            }
+        }
+        catch(Exception $e){
+            logs($e->getMessage());
+            die();
+        }
+        try{
+            if($data = (Object) mysqli_fetch_assoc($result)){
+                mysqli_free_result($result);
+                return $data;                
+            } else {
+                throw new Exception("Data tidak ditemukan", 1);
+            }
+        } catch(Exception $e){
+            logs($e->getMessage());
+            die();
+        }
+        return;
+    }
+
+    public function getPrev($id,$table,$field,$typepk=null){
+        if(isset($typepk)){
+            if($typepk == 'char'){
+                $id = "'$id'";
+            }
+        }
+
+        $sql = "SELECT * FROM $table WHERE $field < $id LIMIT 1";
         logs($sql);
         try{
             if(!($result = mysqli_query($this->connection,$sql))){
