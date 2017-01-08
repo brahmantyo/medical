@@ -46,8 +46,8 @@
 						<a href="#" data-toggle="dropdown" class="dropdown-toggle">Konfigurasi</a>
 						<ul class="dropdown-menu">
 							<li><a href="?url=admin/diagnosa">Daftar Pertanyaan</a></li>
-							<li><a href="?url=admin/respon">Daftar Jawaban</a></li>
-							<li><a href="?url=admin/solusi">Daftar Solusi</a></li>
+							<!-- <li><a href="?url=admin/respon">Daftar Jawaban</a></li> -->
+							<!-- <li><a href="?url=admin/solusi">Daftar Solusi</a></li> -->
 <!-- 							<li><a href="#">Data Gangguan</a></li>
 							<li><a href="#">Daftar Gejala</a></li>
 							<li class="divider"></li>
@@ -61,8 +61,8 @@
  -->							
  							<li class="divider"></li>
 							<li><a href="?url=admin/pasien">Pasien</a></li>
-							<li><a href="#">Users</a></li>
-							<li><a href="#">Groups</a></li>
+							<!-- <li><a href="#">Users</a></li> -->
+							<!-- <li><a href="#">Groups</a></li> -->
 						</ul>
 					</li>
 <!-- 					<li class="nav-item">
@@ -70,7 +70,7 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li> -->
-					<li class="nav-item"><a href="#" class="nav-link">Report</a></li>
+					<!-- <li class="nav-item"><a href="#" class="nav-link">Report</a></li> -->
 				</ul>
 				<ul class="nav navbar-nav" style="float:right">
 					<li class="nav-item pull-right">

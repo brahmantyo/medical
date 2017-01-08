@@ -4,6 +4,7 @@ class Login_Controller extends Controller{
 	private	$error;
 
 	private $username;
+	private $pasien;
 	private $fullname;
 	private $email;
 	private $address;
@@ -55,7 +56,9 @@ class Login_Controller extends Controller{
 			}
 
 
+
 			$this->username 	= $this->user->username;
+			$this->pasien 		= $this->user->idpasien;
 			$this->fullname		= $this->user->fullname;
 			$this->email 		= $this->user->email;
 			$this->address 		= $this->user->address;
@@ -65,6 +68,8 @@ class Login_Controller extends Controller{
 
 			if(isset($_SESSION['id'])==$_POST['username']){
 				logs('Session set.');
+				logs('Privileges: '.$this->privileges);
+
 			}
 			
 		} catch(Exception $e){
@@ -76,6 +81,7 @@ class Login_Controller extends Controller{
 	public function setSession($id) {
 		if(!isset($_SESSION['id'])){
 			$_SESSION['id'] = $id;
+			$_SESSION['pasien'] = $this->pasien;
 			$_SESSION['time'] = time();
 			$_SESSION['fullname'] = $this->fullname;
 			$_SESSION['email'] = $this->email;

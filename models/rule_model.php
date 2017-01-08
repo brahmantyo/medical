@@ -26,6 +26,21 @@ class Rule_Model extends Model
 		return $this->_db->getAll($this->tbname,PAGE_LENGTH,0,$sql);
 	}
 
+	public function getAllRule()
+	{
+		$rules = [];
+		$tmp='';
+		$i = 0;
+		$datas = $this->all('nopage')->data;
+		foreach ($datas as $item) {
+			if($tmp!==$item->kdrule){
+				$tmp = $item->kdrule;
+			}
+			$rules[$item->kdrule] = $item->data;
+		}
+		return $datas;
+	}
+
 	public function getById($id,$field='id',$options=null)
 	{
 		return $this->_db->getById($id,$this->tbname,$field,$options);

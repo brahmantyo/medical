@@ -25,20 +25,27 @@ class Gejala_Model extends Model
 
 	public function getById($id)
 	{
-		return $this->_db->getById($id,$this->tbname);
+		return $this->_db->getById($id,$this->tbname,'kode');
 	}
 	public function getByName($name)
 	{
 		return $this->_db->getByName($name,$this->tbname);
 	}
 
-	public function add($kode,$nama,$konteks,$deskripsi)
+	public function getByDiagnosa($iddiagnosa)
+	{
+		$sql = "SELECT * FROM $this->tbname WHERE iddiagnosa = '$iddiagnosa'";
+		return $this->_db->getById($iddiagnosa,$this->tbname,'iddiagnosa',['pktype'=>'char','limit'=>1]);
+	}
+
+	public function add($kode,$nama,$konteks,$deskripsi,$diagnosa)
 	{
 		$data = [
 			'kode' => $kode,
 			'nmgejala' => $nama,
 			'konteks' => $konteks,
 			'deskripsi' => $deskripsi,
+			'iddiagnosa' => $diagnosa,
 			'created' => date('Y-m-d H:i:s')
 		];
 		
@@ -47,9 +54,34 @@ class Gejala_Model extends Model
 			'nmgejala' => 'char',
 			'konteks' => 'char',
 			'deskripsi' => 'char',
+			'iddiagnosa' => 'char',
 			'created' => 'char'
 		];
 		return $this->_db->create($this->tbname,$data,$type);
+	}
+	public function edit($kode,$nama,$konteks,$deskripsi,$diagnosa)
+	{
+		$id['type'] = 'char';
+		$id['name'] = 'kode';
+		$id['value'] = $kode;
+		$data = [
+			'kode' => $kode,
+			'nmgejala' => $nama,
+			'konteks' => $konteks,
+			'deskripsi' => $deskripsi,
+			'iddiagnosa' => $diagnosa,
+			// 'created' => date('Y-m-d H:i:s')
+		];
+		
+		$type = [
+			'kode' => 'char',
+			'nmgejala' => 'char',
+			'konteks' => 'char',
+			'deskripsi' => 'char',
+			'iddiagnosa' => 'char',
+			// 'created' => 'char'
+		];
+		return $this->_db->update($id,$this->tbname,$data,$type);
 	}
 	public function getLast($fields=null)
 	{

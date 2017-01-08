@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title><?php echo $data['app_title'];?></title>
-	<link rel="stylesheet" type="text/css" href="public/css/bootstrap-3.3.5.min.css">
-	<link rel="stylesheet" type="text/css" href="public/css/bootstrap-3.3.5-theme.min.css">
-	<link rel="stylesheet" type="text/css" href="public/css/app.css">
+	<!-- <link rel="stylesheet" type="text/css" href="public/css/bootstrap-3.3.5.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="public/css/bootstrap-3.3.7-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="public/css/user.css">
 
 	<style type="text/css">
 
@@ -19,18 +19,19 @@
 				<span class="navbar-brand"><?php echo $data['brand'];?></span>
 				<ul class="nav navbar-nav">
 					<li class="nav-item active"><a href="<?php echo SITE_ROOT;?>" class="nav-link">Home<span class="sr-only">(Current)</span></a></li>
-					<li class="nav-item">
+<!-- 					<li class="nav-item">
 						<a href="#" data-toggle="dropdown" class="dropdown-toggle">Master</a>
 						<ul class="dropdown-menu">
 							<li class="divider"></li>
 						</ul>
-					</li>
+					</li> -->
 					<li class="nav-item">
-						<a href="#" data-toggle="dropdown" class="dropdown-toggle">Operasional</a>
-						<ul class="dropdown-menu">
-							<li><a href="?url=user/konsultasi">Konsultasi</a></li>
-							<li><a href="?url=user/laboratorium">Entry Hasil Lab</a></li>
-						</ul>
+						<a href="?url=user/konsultasi">Konsultasi</a>
+						<!-- <a href="#" data-toggle="dropdown" class="dropdown-toggle">Operasional</a> -->
+						<!-- <ul class="dropdown-menu"> -->
+							<!-- <li></li> -->
+							<!-- <li><a href="?url=user/laboratorium">Entry Hasil Lab</a></li> -->
+						<!-- </ul> -->
 					</li>
 					<li class="nav-item"><a href="#" class="nav-link">Report</a></li>
 				</ul>

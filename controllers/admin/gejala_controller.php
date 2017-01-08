@@ -1,5 +1,9 @@
 <?php
 class Gejala_Controller extends Controller{
+	private $error;
+	private $succes;
+	private $state;
+
 	private $kode;
 	private $nama;
 	private $konteks;
@@ -27,18 +31,30 @@ class Gejala_Controller extends Controller{
 		$this->privileges = isset($_SESSION['privileges'])?$_SESSION['privileges'].'/':null;
 		logs('Privileges:' . $this->privileges);
 		$page = isset($_GET['page'])?$_GET['page']:'';
-		if(!isset($_POST['kode'])){
+		if($this->state=='add'||$this->state==''){
 			$data = $this->model->getLast(['kode']);
 			logs($data->kode);
 			$num = (integer) substr($data->kode,1);
 			$num = 'G'.substr((100 + $num + 1),1);
 			logs($num);
 			$this->kode = $num;
+			$this->state = 'add';
 		}
 
 		logs('Masuk Gejala Controller');
 		$this->Load_View('admin/master/gejala');
 		$datas = $this->model->all($page);
+		$this->view->Assign('error',$this->error);
+		$this->view->Assign('succes',$this->succes);
+		$this->view->Assign('state',$this->state);
+		$this->view->Assign('kode',$this->kode);
+		$this->view->Assign('nama',$this->nama);
+		$this->view->Assign('konteks',$this->konteks);
+		$this->view->Assign('deskripsi',$this->deskripsi);
+		$this->view->Assign('iddiagnosa',$this->diagnosa);
+
+
+
 
 		$diagnosa = new Diagnosa_Model;
 		$this->view->Assign('diagnosa',$diagnosa->all('nopage'));
@@ -51,6 +67,8 @@ class Gejala_Controller extends Controller{
 	}
 
 	public function add(){
+		logs('tambah gejala');
+		$this->state = 'add';
 		if(!empty($_POST)){
 			$this->kode = $_POST['kode'];
 			$this->nama = $_POST['nama'];
@@ -58,13 +76,77 @@ class Gejala_Controller extends Controller{
 			$this->deskripsi = $_POST['deskripsi'];
 			$this->diagnosa = $_POST['diagnosa'];
 		}
-		$result = $this->model->add($this->kode,$this->nama,$this->konteks,$this->deskripsi,$this->diagnosa);
-		$this->kode = '';
-		$this->nama = '';
-		$this->konteks = '';
-		$this->deskripsi = '';
-		$this->diagnosa = '';
-		redirect(SITE_ROOT,'admin/gejala');
+		try{
+			if(isset($this->nama)&&$this->nama==''){
+				throw new Exception("Nama Gejala belum terisi");
+			}
+			if(isset($this->diagnosa)&&$this->diagnosa==''){
+				throw new Exception("Pertanyaan Diagnosa belum dipilih");
+			}
+			$result = $this->model->add($this->kode,$this->nama,$this->konteks,$this->deskripsi,$this->diagnosa);
+			logs('Kosongkan fields');
+			$this->kode = '';
+			$this->nama = '';
+			$this->konteks = '';
+			$this->deskripsi = '';
+			$this->diagnosa = '';
+			$this->succes = 'Input Gejala is Success';
+			// redirect(SITE_ROOT,$this->privileges.'gejala');
+		} catch(Exception $e){
+			logs($e->getMessage());
+			$this->error = $e->getMessage();
+		}
+		$this->index();
+	}
+
+	public function edit($id){
+			logs('Edit Gejala');
+			if(isset($_POST['state'])&&$_POST['state']=='edit'){
+				$this->editSave();
+			} else {
+				$this->state = 'edit';
+				$gejala = $this->model->getById($id);
+				// var_dump($gejala);
+				$this->kode = $gejala->kode;
+				$this->nama = $gejala->nmgejala;
+				$this->konteks = $gejala->konteks;
+				$this->deskripsi = $gejala->deskripsi;
+				$this->diagnosa = $gejala->iddiagnosa;
+			}
+			$this->index();
+	}
+	private function editSave(){
+		$kode = 0;
+		logs('update gejala');
+		if(!empty($_POST)){
+			$this->kode = $_POST['kode'];
+			$this->nama = $_POST['nama'];
+			$this->konteks = $_POST['konteks'];
+			$this->deskripsi = $_POST['deskripsi'];
+			$this->diagnosa = $_POST['diagnosa'];
+		}
+			try{
+			if(isset($this->nama)&&$this->nama==''){
+				throw new Exception("Nama Gejala belum terisi");
+			}
+			if(isset($this->diagnosa)&&$this->diagnosa==''){
+				throw new Exception("Pertanyaan Diagnosa belum dipilih");
+			}
+			$result = $this->model->edit($this->kode,$this->nama,$this->konteks,$this->deskripsi,$this->diagnosa);
+			logs('Kosongkan fields');
+			$this->state = '';
+			$this->kode = '';
+			$this->nama = '';
+			$this->konteks = '';
+			$this->deskripsi = '';
+			$this->diagnosa = '';
+			$this->succes = 'Edit Gejala is Success';
+			// redirect(SITE_ROOT,$this->privileges.'gejala');
+		} catch(Exception $e){
+			logs($e->getMessage());
+			$this->error = $e->getMessage();
+		}
+		$this->index();
 	}
 
 	public function remove($id){

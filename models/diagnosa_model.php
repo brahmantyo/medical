@@ -36,6 +36,15 @@ class Diagnosa_Model extends Model
 		return $this->_db->getLast($this->tbname,$fields);
 	}
 
+	public function getFirst($fields=null){
+		return $this->_db->getFirst($this->tbname,$fields);
+	}
+
+	public function getNext($data,$fieldname){
+		$type='char';
+		return $this->_db->getNext($data,$this->tbname,$fieldname,$type);
+	}
+
 	public function add($kode,$deskripsi)
 	{
 		$data = [

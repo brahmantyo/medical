@@ -1,111 +1,42 @@
 <?php echo $data['header'];?>
+		<?php $p = $data['pertanyaan'];?>
+<form action="?url=user/konsultasi" method="POST">
+<input type="hidden" name="idkonsultasi" value="10">
+<input type="hidden" name="kdgejala" value="<?php echo $data['gejala']->kode;?>">
+<input type="hidden" name="pasien" value="12">
+<input type="hidden" name="dokter" value="">
+<div class="panel">
+	<div class="panel-heading">
+		<label class="label"><h4>PERTANYAAN</h4></label>
+	</div>
+	<div class="panel-body">
+		<div style="overflow: visible;overflow-y: scroll; height: 300px;">
+		<?php //echo $p->iddiagnosa.' - '.$p->pertanyaan; ?>
+		<table class="table">
+			<tr>
+				<th>ID</th><th>Pertanyaan</th><th>&nbsp;</th>
+			</tr>
+			<?php echo $i;?>
+			<?php foreach ($data['pertanyaan'] as $pertanyaan) { ?>
+			<tr>
+				<td><?php echo $pertanyaan->iddiagnosa;?></td>
+				<td><?php echo $pertanyaan->pertanyaan;?></td>
+				<td>
+					<input type="radio" id="konsultasi<?php echo $i;?>" name="konsultasi<?php echo $i;?>" value="ya">
+					<label for="konsultasi">Ya</label>
+					<input type="radio" id="konsultasi<?php echo $i;?>" name="konsultasi<?php echo $i;?>" value="tidak">
+					<label for="konsultasi">Tidak</label>
+				</td>
+			</tr>
+			<?php $i++;} ?>
 
-			<div class="col-md-12">
-				<div class="row">
-					<ul class="breadcrumb">
-						<li>
-							<a href="?ur=admin/index">Home</a> <span class="divider"></span>
-						</li>
-						<li>
-							<a href="#">Master</a> <span class="divider"></span>
-						</li>
-						<li class="active">
-							diagnosa
-						</li>
-					</ul>
-					<h3>
-						<center>Konsultasi</center>
-					</h3>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<form action="?url=admin/diagnosa/add" method="post">
-								<input type="hidden" class="form-item" id="kode" name="kode" value="<?php echo $data['kode'];?>">
-							<div class="form-group">
-								<label class="form-label">Kode</label>
-								<input type="text" class="form-item" value="<?php echo $data['kode'];?>" disabled="">
-							</div>
-							<div class="form-group">
-								<label class="form-label">Isi</label>
-								<textarea class="form-item" id="deskripsi" name="deskripsi" placeholder="deskripsi"><?php echo $data['deskripsi'];?></textarea>
-							</div>
-							<div class="form-group"><button class="btn btn-success" type="submit">Save</button></div>
-
-						</form>
-					</div>
-					<div class="col-md-8">
-						<div class="col-md-12">
-						<form id="list" action="?url=admin/diagnosa" method="post" role="form">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Kode</th>
-										<th>Keterangan</th>
-										<th colspan="2">&nbsp;</th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<td colspan="9">
-											<a class="btn" href="<?php echo $data['first'];?>"><<</a>
-											<a class="btn" href="<?php echo $data['prev'];?>"><</a>
-											<a class="btn" href="<?php echo $data['next'];?>">></a>
-											<a class="btn" href="<?php echo $data['end'];?>">>></a>
-										</td>
-									</tr>
-								</tfoot>
-								<tbody>
-									<?php foreach ($data['datas'] as $diagnosa) { ?>
-									<tr>
-										<td><?php echo $diagnosa->iddiagnosa;?></td>
-										<td><?php echo $diagnosa->pertanyaan; ?></td>
-										<td>
-											<a class="btn" href="?url=admin/diagnosa/view/<?php echo $diagnosa->iddiagnosa;?>" >View Respon</a></td>
-										<td>
-											<a class="btn" href="?url=admin/diagnosa/remove/<?php echo $diagnosa->iddiagnosa;?>" >Hapus</a>
-										</td>
-									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
-						</form>
-						</div>
-						<?php if($data['respons']->num_rows!=0){ ?>
-						<div class="col-md-12">
-							<b>Pertanyaan:</b><br>
-							<?php echo $data['d']->iddiagnosa.' - '.$data['d']->pertanyaan;?>
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Id</th>
-										<th>Jawaban</th>
-										<th>Nilai</th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<td colspan="3">
-											<a class="btn" href="<?php echo $data['resfirst'];?>"><<</a>
-											<a class="btn" href="<?php echo $data['resprev'];?>"><</a>
-											<a class="btn" href="<?php echo $data['resnext'];?>">></a>
-											<a class="btn" href="<?php echo $data['resend'];?>">>></a>
-										</td>
-									</tr>
-								</tfoot>
-								<tbody>
-								<?php foreach ($data['respons']->data as $respon) { ?>
-									<tr>
-										<td><?php echo $respon->idrespon; ?></td>
-										<td><?php echo $respon->describes; ?></td>
-										<td><?php echo $respon->nilai; ?></td>
-									</tr>
-								<?php } ?>
-								</tbody>		
-							</table>
-						</div>
-						<?php } ?>
-					</div>
-				</div>
-
-			</div>
+		</table>
+		</div>
+	</div>
+	<div class="panel-footer" align="center">
+		<button name="respon" type="submit" class="btn btn-success" value="ya">Simpan</button>
+		<button name="respon" type="button" class="btn btn-warning" value="tidak">Reset</button>
+	</div>
+</div>
+</form>
 <?php echo $data['footer'];?>

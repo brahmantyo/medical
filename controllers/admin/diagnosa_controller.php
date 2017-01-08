@@ -106,5 +106,4 @@ class Diagnosa_Controller extends Controller{
 
 		$this->index();
 	}
-
 }
